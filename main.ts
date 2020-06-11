@@ -39,17 +39,17 @@ namespace myTiles {
 `
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
-    music.baDing.play()
     discovered_animal = otherSprite.vx / -10 - 1
     sub.say("Yay,  " + animal_names[discovered_animal] + "!", 500)
     otherSprite.destroy()
     if (discovered_animal == 8) {
-        sub.say("Ow, stingers!")
+        sub.say("Ow, stingers!", 1000)
         game.over(false)
     } else if (discovered_animal == 9) {
-        sub.say("Ack, teeth!")
+        sub.say("Ack, teeth!", 1000)
         game.over(false)
     } else {
+        music.baDing.play()
         info.changeScoreBy(1)
     }
 })
@@ -181,6 +181,7 @@ d 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d d d d d d d 7 7 7 7 7 d d 
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d 7 7 7 7 7 7 7 7 
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d 7 7 7 7 7 7 7 7 
 `)
+game.splash("Catch critters to study.", "Avoid dangerous ones.")
 sub = sprites.create(img`
 . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
 . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
@@ -200,6 +201,7 @@ f f b b f d e d e d e d e d e d e d e d e d e d e d e f b b f f
 . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
 `, SpriteKind.Player)
 controller.moveSprite(sub)
+sub.setFlag(SpriteFlag.StayInScreen, true)
 let animal_images = [img`
 . . . . . 7 7 7 . . . . . . . . 
 . . . . 7 7 7 . . . . . . . . . 
