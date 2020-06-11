@@ -1,0 +1,34 @@
+{
+    "name": "Science Sub",
+    "dependencies": {
+        "device": "*"
+    },
+    "description": "",
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md"
+    ],
+    "preferredEditor": "blocksprj",
+    "palette": [
+        "#000000",
+        "#f173ac",
+        "#f49ac1",
+        "#f8c1d9",
+        "#ee2f4e",
+        "#b43e97",
+        "#c77eb5",
+        "#6ec05d",
+        "#b1d355",
+        "#00af62",
+        "#2e75ba",
+        "#6dcff6",
+        "#badaf3",
+        "#f6b040",
+        "#ffd540",
+        "#000000"
+    ],
+    "testFiles": [
+        "test.ts"
+    ]
+}
