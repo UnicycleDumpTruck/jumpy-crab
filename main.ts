@@ -39,8 +39,8 @@ namespace myTiles {
 `
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
-    discovered_animal = otherSprite.vx / -10 - 1
-    sub.say("Yay,  " + animal_names[discovered_animal] + "!", 500)
+    discovered_animal = Math.abs(otherSprite.vx) / 10 - 1
+    sub.say(animal_names[discovered_animal], 500)
     otherSprite.destroy()
     if (discovered_animal == 8) {
         sub.say("Ow, stingers!", 1000)
@@ -53,6 +53,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
         info.changeScoreBy(1)
     }
 })
+let shark: Sprite = null
 let projectile: Sprite = null
 let animal_speed = 0
 let animal_choice = 0
@@ -373,10 +374,34 @@ d d f d f d d d d d d d d d d .
 . . . . . . . . . . . . . d . . 
 . . . . . . . . . . . . . . . . 
 `]
-animal_names = ["turtle", "crab", "green Fish", "octopus", "pink fish", "narwhal", "ray", "whale", "puffer fish", "shark"]
+animal_names = ["Turtle!", "Crab!", "Green Fish!", "Octopus!", "Pink fish!", "Narwhal!", "Ray!", "Whale!", "Puffer Fish!", "Shark!"]
+let left_shark_image = img`
+. . . . . . . . . . . . . . . . 
+. . . . . . d d d d . . . . . . 
+. . . . . d d d d . . . . . . . 
+d d d d d d d d d d d d d . . . 
+d d f d f d d d d d d d d d d . 
+. e e e e e e e d d d d d d d d 
+. . e c c c e e e e e e e e d d 
+. . . e e e e e e e e e e e e d 
+. . . . . d d . d d . . . . e d 
+. . . . . d . . . d . . . . d d 
+. . . . . . . . . . . d d d d d 
+. . . . . . . . . . d d d d d . 
+. . . . . . . . . . . . . d d . 
+. . . . . . . . . . . . . d d . 
+. . . . . . . . . . . . . d . . 
+. . . . . . . . . . . . . . . . 
+`.clone()
+left_shark_image.flipX()
 game.onUpdateInterval(2000, function () {
-    animal_choice = Math.randomRange(0, animal_images.length - 1)
+    animal_choice = Math.randomRange(0, 9)
+    // We're using the speed to store the animal type.
     animal_speed = (animal_choice + 1) * -10
     projectile = sprites.createProjectileFromSide(animal_images[animal_choice], animal_speed, 0)
-    projectile.y = Math.randomRange(10, scene.screenHeight())
+    // Choose random height for animal.
+    projectile.y = Math.randomRange(10, scene.screenHeight() - 10)
+})
+game.onUpdateInterval(1000, function () {
+    shark = sprites.createProjectileFromSide(left_shark_image, 90, 0)
 })
