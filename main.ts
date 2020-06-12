@@ -51,6 +51,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
     } else {
         music.baDing.play()
         info.changeScoreBy(1)
+        sprite.startEffect(effects.trail, 500)
     }
 })
 let shark: Sprite = null
@@ -402,6 +403,7 @@ game.onUpdateInterval(2000, function () {
     // Choose random height for animal.
     projectile.y = Math.randomRange(10, scene.screenHeight() - 10)
 })
-game.onUpdateInterval(1000, function () {
+game.onUpdateInterval(5000, function () {
     shark = sprites.createProjectileFromSide(left_shark_image, 90, 0)
+    shark.y = Math.randomRange(10, scene.screenHeight() - 10)
 })
