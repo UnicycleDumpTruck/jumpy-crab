@@ -39,13 +39,12 @@ namespace myTiles {
 `
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
-    discovered_animal = Math.abs(otherSprite.vx) / 10 - 1
-    sub.say(animal_names[discovered_animal], 500)
+    sub.say(sprites.readDataString(otherSprite, "species"), 500)
     otherSprite.destroy()
-    if (discovered_animal == 8) {
+    if (sprites.readDataString(otherSprite, "species") == "Pufferfish!") {
         sub.say("Ow, stingers!", 1000)
         game.over(false)
-    } else if (discovered_animal == 9) {
+    } else if (sprites.readDataString(otherSprite, "species") == "Shark!") {
         sub.say("Ack, teeth!", 1000)
         game.over(false)
     } else {
@@ -55,11 +54,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
     }
 })
 let shark: Sprite = null
-let projectile: Sprite = null
+let animal_sprite: Sprite = null
 let animal_speed = 0
 let animal_choice = 0
-let discovered_animal = 0
-let animal_names: string[] = []
 let sub: Sprite = null
 scene.setBackgroundImage(img`
 a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a 
@@ -204,7 +201,7 @@ f f b b f d e d e d e d e d e d e d e d e d e d e d e f b b f f
 `, SpriteKind.Player)
 controller.moveSprite(sub)
 sub.setFlag(SpriteFlag.StayInScreen, true)
-let animal_images = [img`
+let animal_image_list = [img`
 . . . . . 7 7 7 . . . . . . . . 
 . . . . 7 7 7 . . . . . . . . . 
 . . . . 7 7 . . . . . 7 7 7 7 . 
@@ -375,7 +372,8 @@ d d f d f d d d d d d d d d d .
 . . . . . . . . . . . . . d . . 
 . . . . . . . . . . . . . . . . 
 `]
-animal_names = ["Turtle!", "Crab!", "Green Fish!", "Octopus!", "Pink fish!", "Narwhal!", "Ray!", "Whale!", "Puffer Fish!", "Shark!"]
+let animal_names = ["Turtle!", "Crab!", "Green Fish!", "Octopus!", "Pink fish!", "Narwhal!", "Ray!", "Whale!", "Pufferfish!", "Shark!"]
+let animal_speed_list = [-10, -20, -30, -40, -50, -60, -70, -80, -90, -100]
 let left_shark_image = img`
 . . . . . . . . . . . . . . . . 
 . . . . . . d d d d . . . . . . 
@@ -398,12 +396,14 @@ left_shark_image.flipX()
 game.onUpdateInterval(2000, function () {
     animal_choice = Math.randomRange(0, 9)
     // We're using the speed to store the animal type.
-    animal_speed = (animal_choice + 1) * -10
-    projectile = sprites.createProjectileFromSide(animal_images[animal_choice], animal_speed, 0)
+    animal_speed = animal_speed_list[animal_choice]
+    animal_sprite = sprites.createProjectileFromSide(animal_image_list[animal_choice], animal_speed, 0)
     // Choose random height for animal.
-    projectile.y = Math.randomRange(10, scene.screenHeight() - 10)
+    animal_sprite.y = Math.randomRange(10, scene.screenHeight() - 10)
+    sprites.setDataString(animal_sprite, "species", animal_names[animal_choice])
 })
 game.onUpdateInterval(5000, function () {
     shark = sprites.createProjectileFromSide(left_shark_image, 90, 0)
     shark.y = Math.randomRange(10, scene.screenHeight() - 10)
+    sprites.setDataString(shark, "species", "Shark!")
 })
