@@ -41,24 +41,42 @@ namespace myTiles {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
     sub.say(sprites.readDataString(otherSprite, "species"), 500)
     otherSprite.destroy()
-    if (sprites.readDataString(otherSprite, "species") == "Pufferfish!") {
-        sub.say("Ow, stingers!", 1000)
-        game.over(false)
-    } else if (sprites.readDataString(otherSprite, "species") == "Shark!") {
-        sub.say("Ack, teeth!", 1000)
-        game.over(false)
+    if (sprites.readDataString(otherSprite, "species") == "Shark!") {
+        immune = 0
+        for (let index = 0; index <= 9; index++) {
+            if (num_caught_list[index] == 10) {
+                game.splash("Immunity Found!")
+                immune = index + 1
+            }
+        }
+        if (immune > 0) {
+            game.splash("Studying the " + animal_names[immune - 1] + " has given you the techniques to catch this one shark. Further study will be needed to catch another shark.")
+            num_caught_list[immune - 1] = 0
+            num_caught_list[10] = num_caught_list[10] + 1
+        } else {
+            sub.say("Ack, teeth!", 5000)
+        }
     } else {
-        num_caught_list[sprites.readDataNumber(otherSprite, "animal_index")] = num_caught_list[sprites.readDataNumber(otherSprite, "animal_index")] + 1
         music.baDing.play()
         info.changeScoreBy(1)
         sprite.startEffect(effects.trail, 500)
+        caught = num_caught_list[sprites.readDataNumber(otherSprite, "animal_index")]
+        sub.say(convertToText(caught), 500)
+        if (caught < 9) {
+            num_caught_list[sprites.readDataNumber(otherSprite, "animal_index")] = caught + 1
+        } else if (caught == 9) {
+            num_caught_list[sprites.readDataNumber(otherSprite, "animal_index")] = 10
+        }
     }
 })
 let shark: Sprite = null
 let animal_sprite: Sprite = null
 let animal_speed = 0
 let animal_choice = 0
+let caught = 0
+let immune = 0
 let num_caught_list: number[] = []
+let animal_names: string[] = []
 let sub: Sprite = null
 scene.setBackgroundImage(img`
 a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a 
@@ -374,7 +392,7 @@ d d f d f d d d d d d d d d d .
 . . . . . . . . . . . . . d . . 
 . . . . . . . . . . . . . . . . 
 `]
-let animal_names = ["Turtle!", "Crab!", "Green Fish!", "Octopus!", "Pink fish!", "Narwhal!", "Ray!", "Whale!", "Pufferfish!", "Shark!"]
+animal_names = ["Turtle!", "Crab!", "Green Fish!", "Octopus!", "Pink fish!", "Narwhal!", "Ray!", "Whale!", "Pufferfish!", "Shark!"]
 let animal_speed_list = [-10, -20, -30, -40, -50, -60, -70, -80, -90, -100]
 num_caught_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 let left_shark_image = img`
@@ -396,8 +414,8 @@ d d f d f d d d d d d d d d d .
 . . . . . . . . . . . . . . . . 
 `.clone()
 left_shark_image.flipX()
-game.onUpdateInterval(2000, function () {
-    animal_choice = Math.randomRange(0, 9)
+game.onUpdateInterval(500, function () {
+    animal_choice = Math.randomRange(0, 8)
     animal_speed = animal_speed_list[animal_choice]
     animal_sprite = sprites.createProjectileFromSide(animal_image_list[animal_choice], animal_speed, 0)
     // Choose random height for animal.
