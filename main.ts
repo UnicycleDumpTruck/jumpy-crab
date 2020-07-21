@@ -48,6 +48,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
         sub.say("Ack, teeth!", 1000)
         game.over(false)
     } else {
+        num_caught_list[sprites.readDataNumber(otherSprite, "animal_index")] = num_caught_list[sprites.readDataNumber(otherSprite, "animal_index")] + 1
         music.baDing.play()
         info.changeScoreBy(1)
         sprite.startEffect(effects.trail, 500)
@@ -57,6 +58,7 @@ let shark: Sprite = null
 let animal_sprite: Sprite = null
 let animal_speed = 0
 let animal_choice = 0
+let num_caught_list: number[] = []
 let sub: Sprite = null
 scene.setBackgroundImage(img`
 a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a 
@@ -374,6 +376,7 @@ d d f d f d d d d d d d d d d .
 `]
 let animal_names = ["Turtle!", "Crab!", "Green Fish!", "Octopus!", "Pink fish!", "Narwhal!", "Ray!", "Whale!", "Pufferfish!", "Shark!"]
 let animal_speed_list = [-10, -20, -30, -40, -50, -60, -70, -80, -90, -100]
+num_caught_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 let left_shark_image = img`
 . . . . . . . . . . . . . . . . 
 . . . . . . d d d d . . . . . . 
@@ -395,12 +398,12 @@ d d f d f d d d d d d d d d d .
 left_shark_image.flipX()
 game.onUpdateInterval(2000, function () {
     animal_choice = Math.randomRange(0, 9)
-    // We're using the speed to store the animal type.
     animal_speed = animal_speed_list[animal_choice]
     animal_sprite = sprites.createProjectileFromSide(animal_image_list[animal_choice], animal_speed, 0)
     // Choose random height for animal.
     animal_sprite.y = Math.randomRange(10, scene.screenHeight() - 10)
     sprites.setDataString(animal_sprite, "species", animal_names[animal_choice])
+    sprites.setDataNumber(animal_sprite, "animal_index", animal_choice)
 })
 game.onUpdateInterval(5000, function () {
     shark = sprites.createProjectileFromSide(left_shark_image, 90, 0)
