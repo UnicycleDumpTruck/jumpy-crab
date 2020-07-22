@@ -65,6 +65,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
             game.splash("" + immunity_text_list[immune - 1] + " You caught this shark!")
             num_caught_list[immune - 1] = 0
             num_caught_list[9] = num_caught_list[9] + 1
+            info.changeScoreBy(50)
             updateImmunityDisplay()
             if (num_caught_list[9] == 10) {
                 game.over(true, effects.bubbles)
@@ -89,10 +90,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
         otherSprite.destroy()
     }
 })
-let shark: Sprite = null
 let animal_sprite: Sprite = null
 let animal_speed = 0
 let animal_choice = 0
+let shark: Sprite = null
 let caught = 0
 let immune = 0
 let icon: Sprite = null
@@ -223,7 +224,7 @@ d 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d d d d d d d 7 7 7 7 7 d d 
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d 7 7 7 7 7 7 7 7 
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d 7 7 7 7 7 7 7 7 
 `)
-game.splash("Catch critters to study.", "Don't get eaten.")
+game.splash("Catch creatures to study.", "Don't get eaten.")
 sub = sprites.create(img`
 . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
 . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
@@ -529,7 +530,12 @@ d d f d f d d d d d d d d d d .
 . . . . . . . . . . . . . . . . 
 `.clone()
 left_shark_image.flipX()
-game.onUpdateInterval(500, function () {
+game.onUpdateInterval(5000, function () {
+    shark = sprites.createProjectileFromSide(left_shark_image, 90, 0)
+    shark.y = Math.randomRange(10, scene.screenHeight() - 10)
+    sprites.setDataString(shark, "species", "Shark")
+})
+game.onUpdateInterval(1000, function () {
     animal_choice = Math.randomRange(0, 8)
     animal_speed = animal_speed_list[animal_choice]
     animal_sprite = sprites.createProjectileFromSide(animal_image_list[animal_choice], animal_speed, 0)
@@ -537,9 +543,4 @@ game.onUpdateInterval(500, function () {
     animal_sprite.y = Math.randomRange(10, scene.screenHeight() - 10)
     sprites.setDataString(animal_sprite, "species", animal_names[animal_choice])
     sprites.setDataNumber(animal_sprite, "animal_index", animal_choice)
-})
-game.onUpdateInterval(5000, function () {
-    shark = sprites.createProjectileFromSide(left_shark_image, 90, 0)
-    shark.y = Math.randomRange(10, scene.screenHeight() - 10)
-    sprites.setDataString(shark, "species", "Shark")
 })
