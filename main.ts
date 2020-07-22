@@ -39,24 +39,42 @@ namespace myTiles {
 `
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
-    sub.say(sprites.readDataString(otherSprite, "species"), 500)
     otherSprite.destroy()
-    if (sprites.readDataString(otherSprite, "species") == "Pufferfish!") {
-        sub.say("Ow, stingers!", 1000)
-        game.over(false)
-    } else if (sprites.readDataString(otherSprite, "species") == "Shark!") {
-        sub.say("Ack, teeth!", 1000)
-        game.over(false)
+    if (sprites.readDataString(otherSprite, "species") == "Shark") {
+        immune = 0
+        for (let index = 0; index <= 9; index++) {
+            if (num_caught_list[index] == 10) {
+                immune = index + 1
+            }
+        }
+        if (immune > 0) {
+            game.splash("" + animal_names[immune - 1] + " power! Shark caught!")
+            num_caught_list[immune - 1] = 0
+            num_caught_list[10] = num_caught_list[10] + 1
+        } else {
+            sub.say("Ack, teeth!", 5000)
+        }
     } else {
+        sub.say(sprites.readDataString(otherSprite, "species"), 500)
         music.baDing.play()
         info.changeScoreBy(1)
         sprite.startEffect(effects.trail, 500)
+        caught = num_caught_list[sprites.readDataNumber(otherSprite, "animal_index")]
+        if (caught < 9) {
+            num_caught_list[sprites.readDataNumber(otherSprite, "animal_index")] = caught + 1
+        } else if (caught == 9) {
+            num_caught_list[sprites.readDataNumber(otherSprite, "animal_index")] = 10
+        }
     }
 })
 let shark: Sprite = null
 let animal_sprite: Sprite = null
 let animal_speed = 0
 let animal_choice = 0
+let caught = 0
+let immune = 0
+let num_caught_list: number[] = []
+let animal_names: string[] = []
 let sub: Sprite = null
 scene.setBackgroundImage(img`
 a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a 
@@ -180,7 +198,7 @@ d 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d d d d d d d 7 7 7 7 7 d d 
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d 7 7 7 7 7 7 7 7 
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d 7 7 7 7 7 7 7 7 
 `)
-game.splash("Catch critters to study.", "Avoid dangerous ones.")
+game.splash("Catch critters to study.", "Don't get eaten.")
 sub = sprites.create(img`
 . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
 . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
@@ -372,8 +390,9 @@ d d f d f d d d d d d d d d d .
 . . . . . . . . . . . . . d . . 
 . . . . . . . . . . . . . . . . 
 `]
-let animal_names = ["Turtle!", "Crab!", "Green Fish!", "Octopus!", "Pink fish!", "Narwhal!", "Ray!", "Whale!", "Pufferfish!", "Shark!"]
+animal_names = ["Turtle", "Crab", "Green Fish", "Octopus", "Pink fish", "Narwhal", "Ray", "Whale", "Pufferfish", "Shark"]
 let animal_speed_list = [-10, -20, -30, -40, -50, -60, -70, -80, -90, -100]
+num_caught_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 let left_shark_image = img`
 . . . . . . . . . . . . . . . . 
 . . . . . . d d d d . . . . . . 
@@ -393,17 +412,17 @@ d d f d f d d d d d d d d d d .
 . . . . . . . . . . . . . . . . 
 `.clone()
 left_shark_image.flipX()
-game.onUpdateInterval(2000, function () {
-    animal_choice = Math.randomRange(0, 9)
-    // We're using the speed to store the animal type.
+game.onUpdateInterval(500, function () {
+    animal_choice = Math.randomRange(0, 8)
     animal_speed = animal_speed_list[animal_choice]
     animal_sprite = sprites.createProjectileFromSide(animal_image_list[animal_choice], animal_speed, 0)
     // Choose random height for animal.
     animal_sprite.y = Math.randomRange(10, scene.screenHeight() - 10)
     sprites.setDataString(animal_sprite, "species", animal_names[animal_choice])
+    sprites.setDataNumber(animal_sprite, "animal_index", animal_choice)
 })
 game.onUpdateInterval(5000, function () {
     shark = sprites.createProjectileFromSide(left_shark_image, 90, 0)
     shark.y = Math.randomRange(10, scene.screenHeight() - 10)
-    sprites.setDataString(shark, "species", "Shark!")
+    sprites.setDataString(shark, "species", "Shark")
 })
