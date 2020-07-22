@@ -64,11 +64,15 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
         if (immune > 0) {
             game.splash("" + immunity_text_list[immune - 1] + " You caught this shark!")
             num_caught_list[immune - 1] = 0
-            num_caught_list[10] = num_caught_list[10] + 1
+            num_caught_list[9] = num_caught_list[9] + 1
             updateImmunityDisplay()
+            if (num_caught_list[9] == 10) {
+                game.over(true, effects.bubbles)
+            }
             otherSprite.destroy()
         } else {
-            sub.say("Ack, teeth!", 5000)
+            sub.say("Ack, teeth!", 2000)
+            game.over(false)
         }
     } else {
         sub.say(sprites.readDataString(otherSprite, "species"), 500)
