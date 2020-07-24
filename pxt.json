@@ -1,14 +1,27 @@
 {
     "name": "Science Sub",
+    "description": "",
     "dependencies": {
         "device": "*",
         "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.0.6"
     },
-    "description": "",
     "files": [
         "main.blocks",
         "main.ts",
-        "README.md"
+        "README.md",
+        "tilemap.g.jres",
+        "tilemap.g.ts",
+        "main.py"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "target": "1.0.14",
+        "targetId": "arcade"
+    },
+    "supportedTargets": [
+        "arcade"
     ],
     "preferredEditor": "blocksprj",
     "palette": [
@@ -28,8 +41,5 @@
         "#f6b040",
         "#ffd540",
         "#000000"
-    ],
-    "testFiles": [
-        "test.ts"
     ]
 }
