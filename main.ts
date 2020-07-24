@@ -61,43 +61,34 @@ scene.setBackgroundImage(ScienceSubTitle)
         `)
     game.showLongText("Venture into the sea, study the animals. Press \"A\" to start.", DialogLayout.Bottom)
 }
+function sharkEncountered (mySprite: Sprite) {
+    immune = 0
+    for (let index2 = 0; index2 <= 9; index2++) {
+        if (num_caught_list[index2] == animals_needed_to_learn_immunity) {
+            immune = index2 + 1
+        }
+    }
+    if (immune > 0) {
+        displayDialog("" + immunity_text_list[immune - 1] + " You caught this shark!")
+        num_caught_list[immune - 1] = 0
+        num_caught_list[9] = num_caught_list[9] + 1
+        info.changeScoreBy(50)
+        loseImmunity()
+        if (num_caught_list[9] == 9) {
+            music.stopAllSounds()
+            game.over(true, effects.bubbles)
+        }
+        mySprite.destroy()
+    } else {
+        sub.say("Ack, teeth!", 2000)
+        game.over(false)
+    }
+}
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
     if (sprites.readDataString(otherSprite, "species") == "Shark") {
-        immune = 0
-        for (let index2 = 0; index2 <= 9; index2++) {
-            if (num_caught_list[index2] == animals_needed_to_learn_immunity) {
-                immune = index2 + 1
-            }
-        }
-        if (immune > 0) {
-            displayDialog("" + immunity_text_list[immune - 1] + " You caught this shark!")
-            num_caught_list[immune - 1] = 0
-            num_caught_list[9] = num_caught_list[9] + 1
-            info.changeScoreBy(50)
-            loseImmunity()
-            if (num_caught_list[9] == 9) {
-                music.stopAllSounds()
-                game.over(true, effects.bubbles)
-            }
-            otherSprite.destroy()
-        } else {
-            sub.say("Ack, teeth!", 2000)
-            game.over(false)
-        }
+        sharkEncountered(otherSprite)
     } else {
-        sub.say(sprites.readDataString(otherSprite, "species"), 500)
-        music.baDing.play()
-        info.changeScoreBy(1)
-        sprite.startEffect(effects.trail, 500)
-        animal_caught_species_id_number = sprites.readDataNumber(otherSprite, "animal_index")
-        num_animals_caught = num_caught_list[animal_caught_species_id_number]
-        if (num_animals_caught < animals_needed_to_learn_immunity - 1) {
-            num_caught_list[animal_caught_species_id_number] = num_animals_caught + 1
-        } else if (num_animals_caught == animals_needed_to_learn_immunity - 1) {
-            num_caught_list[animal_caught_species_id_number] = animals_needed_to_learn_immunity
-            subImmuneByStudyingAnimal(animal_caught_species_id_number)
-        }
-        otherSprite.destroy()
+        nonSharkEncountered(otherSprite)
     }
 })
 function loseImmunity () {
@@ -119,6 +110,22 @@ function loseImmunity () {
         . f f b f d d d d d d d d d d d d d d d d d d d d d d f b f f . 
         . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
         `)
+}
+function nonSharkEncountered (mySprite: Sprite) {
+    music.baDing.play()
+    sub.startEffect(effects.trail, 500)
+    animal_caught_species_id_number = sprites.readDataNumber(mySprite, "animal_index")
+    num_animals_caught = num_caught_list[animal_caught_species_id_number]
+    if (num_animals_caught < animals_needed_to_learn_immunity - 1) {
+        num_caught_list[animal_caught_species_id_number] = num_animals_caught + 1
+    } else if (num_animals_caught == animals_needed_to_learn_immunity - 1) {
+        num_caught_list[animal_caught_species_id_number] = animals_needed_to_learn_immunity
+        subImmuneByStudyingAnimal(animal_caught_species_id_number)
+    }
+    mySprite.destroy()
+    sub.say("" + sprites.readDataString(mySprite, "species") + " #" + (num_animals_caught + 1), 500)
+    // Faster animals are worth more points.
+    info.changeScoreBy(animal_caught_species_id_number)
 }
 function fillAnimalArrays () {
     immunity_text_list = [
