@@ -1,19 +1,13 @@
 # science-sub ![Build status badge](https://github.com/babywrassler/science-sub/workflows/MakeCode/badge.svg)
 
+This game is about a submarine on a mission to study ocean creatures. The player pilots the submarine, trying to catch animals to study. In the beginning, sharks will be too dangerous to catch - contacting one will end the game. The game tracks how many of each animal is caught. When 10 of a particular species are caught, the player earns a badge, which is effective tradable for immunity while catching one shark. Catching a shark causes the loss of that particular badge, but it can be earned back. There are nine animals besides the shark, and nine sharks must be caught to win the game. The story is that studying how the other animals defend themselves against sharks allows the submarine to use those techniques to catch sharks.
 
+## Future plans
+Eventually, I'd like to eliminate the immunity badge system, and instead display immunity by modifying the submarine's sprite image.
 
-## Use this extension
+## Edit this Game
 
-This repository can be added as an **extension** in MakeCode.
-
-* open https://arcade.makecode.com/
-* click on **New Project**
-* click on **Extensions** under the gearwheel menu
-* search for the URL of this repository and import
-
-## Edit this extension
-
-To edit this repository in MakeCode.
+To edit this repository in MakeCode:
 
 * open https://arcade.makecode.com/
 * click on **Import** then click on **Import URL**
