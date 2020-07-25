@@ -109,7 +109,7 @@ function loseImmunity () {
         `)
     if (immunity_badge_awarded[current_immunity] == 0) {
         new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
-        new_badge.setPosition(12 * current_immunity, 4)
+        new_badge.setPosition(12 * current_immunity + 4, 4)
         info.changeScoreBy(100)
     }
     current_immunity = -1
@@ -291,22 +291,22 @@ function fillAnimalArrays () {
         . . 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 . . 
         `,
     img`
-        . . . f f f f f f f f f f f f f f f . . . . . . . f f f f f f . 
-        . . f f d e d e e e e e d d d f . f f f f f f f f f . . . . . . 
-        f f f e d d e e e e e d e d d f f f . . . . . . . . . f f f f f 
-        f e e d c b d e e d e e e e d f f f f f f . . f f f f f . . . . 
-        f e d c b b b d e e e e e e e f . . . . . f f . f f f f . f f f 
-        f e d b b b b d e e d d e e e f f f f f . . . f f . . . f f . . 
-        f d e d b b d e e e e e e d e f . . . . f f . f f f f . . . . f 
-        f e e d d d e d e e e e e d e f f f f f f f f f . . f f f f f f 
-        f e e e d d e e e e e e e e e f . . . . . . . . . . . . . . . . 
-        f e e d c b d e e e e e e d e f . f f f f f f f f . . . f f f . 
-        f e d c b b b d e e d d e e e f f f . . . . . . . f f f . . . . 
-        f e d b b b b d e e e e e e e f . . f f f f f f . . . . . . f f 
-        f e e d b b d e e e e e e e d f . f . . . . . . f f . . f f f . 
-        f f f d d d e d d d e d e d d f f . . f f f f . . f f f . . . . 
-        . . f f d d d d d d d d d d d f . . f f . . f f . . . . . . f f 
-        . . . f f f f f f f f f f f f f f f f . . . . f f f f f f f . . 
+        . . . f f f f f f f f f f f f f f f f f f f . . . . . . f f f . 
+        . . f f d e d e e e e e d d d e e d e e e f f f f f f f f e e f 
+        . f f e d d e e e e e d e d e e e e e d e d e e e d e e e d e f 
+        f f e d c b d e e d e e e e d f f f f f f f e d e e e d e f f . 
+        f e d c b b b d e e e e e e e f . . . . . f f f f f f f f f . . 
+        f e d b b b b d e e d d e e e f . . . . . . . . . . . . . . . . 
+        f d e d b b d e e e e e e d e f . . f f f f f f f f f f f f f . 
+        f e e d d d e d e e d d e d e f f f f e d e e e d e e e d e e f 
+        f e e e d d e e e e d d e e e e e e d e e e d e e e d e e e d f 
+        f e e d c b d e e e e e e d e e d e f f f f f f f f f f f f f . 
+        f e d c b b b d e e d d e e e f f f f . . . . . . . . . . . . . 
+        f e d b b b b d e e e e e e e f . . . . f f f f f f f f . . . . 
+        f f e d b b d e e e e e e e d f f f f f f e d e e e d f f f f . 
+        . f f d d d e d d d e d e d e e d e e e d e e e d e e e e d e f 
+        . . f f d d d d d d d d d d d e e e d e e f f f f f f d e e e f 
+        . . . f f f f f f f f f f f f f f f f f f f . . . . f f f f f . 
         `,
     img`
         . . . . . . . . . . . 5 5 5 5 5 5 . . . . . . . . . . . . . . . 
