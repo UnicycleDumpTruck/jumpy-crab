@@ -2,9 +2,6 @@ namespace SpriteKind {
     export const Immunity = SpriteKind.create()
     export const Badge = SpriteKind.create()
 }
-function updateImmunityAchievementBadge () {
-	
-}
 function displayDialog (text: string) {
     game.setDialogFrame(img`
         . . e e e e e e e e e e e e e e e e e e e e . . 
@@ -110,7 +107,7 @@ function loseImmunity () {
     if (immunity_badge_awarded[current_immunity] == 0) {
         new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
         new_badge.setPosition(12 * current_immunity + 4, 4)
-        info.changeScoreBy(100)
+        info.changeScoreBy(300)
     }
     current_immunity = -1
 }
@@ -126,6 +123,8 @@ function nonSharkEncountered (mySprite: Sprite) {
         sub.say("" + sprites.readDataString(mySprite, "species") + " #" + (num_animals_caught + 1), 500)
         num_caught_list[animal_caught_species_id_number] = animals_needed_to_learn_immunity
         subImmuneByStudyingAnimal(animal_caught_species_id_number)
+    } else {
+        sub.say("" + sprites.readDataString(mySprite, "species"), 500)
     }
     mySprite.destroy()
     // Faster animals are worth more points.
