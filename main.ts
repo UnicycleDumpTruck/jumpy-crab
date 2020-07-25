@@ -65,6 +65,7 @@ scene.setBackgroundImage(ScienceSubTitle)
 }
 function sharkEncountered (mySprite: Sprite) {
     if (current_immunity > -1) {
+        music.magicWand.play()
         displayDialog("" + immunity_text_list[current_immunity] + " You caught this shark!")
         num_caught_list[current_immunity] = 0
         num_caught_list[9] = num_caught_list[9] + 1
@@ -122,6 +123,7 @@ function nonSharkEncountered (mySprite: Sprite) {
         num_caught_list[animal_caught_species_id_number] = num_animals_caught + 1
         sub.say("" + sprites.readDataString(mySprite, "species") + " #" + (num_animals_caught + 1), 500)
     } else if (num_animals_caught == animals_needed_to_learn_immunity - 1) {
+        sub.say("" + sprites.readDataString(mySprite, "species") + " #" + (num_animals_caught + 1), 500)
         num_caught_list[animal_caught_species_id_number] = animals_needed_to_learn_immunity
         subImmuneByStudyingAnimal(animal_caught_species_id_number)
     }
