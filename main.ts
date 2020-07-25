@@ -88,8 +88,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
     }
 })
 function loseImmunity () {
-    new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
-    new_badge.setPosition(12 * current_immunity, 4)
     sub.setImage(img`
         . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
         . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
@@ -108,6 +106,11 @@ function loseImmunity () {
         . f f b f d d d d d d d d d d d d d d d d d d d d d d f b f f . 
         . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
         `)
+    if (immunity_badge_awarded[current_immunity] == 0) {
+        new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
+        new_badge.setPosition(12 * current_immunity, 4)
+        info.changeScoreBy(100)
+    }
     current_immunity = -1
 }
 function nonSharkEncountered (mySprite: Sprite) {
@@ -117,26 +120,26 @@ function nonSharkEncountered (mySprite: Sprite) {
     num_animals_caught = num_caught_list[animal_caught_species_id_number]
     if (num_animals_caught < animals_needed_to_learn_immunity - 1) {
         num_caught_list[animal_caught_species_id_number] = num_animals_caught + 1
+        sub.say("" + sprites.readDataString(mySprite, "species") + " #" + (num_animals_caught + 1), 500)
     } else if (num_animals_caught == animals_needed_to_learn_immunity - 1) {
         num_caught_list[animal_caught_species_id_number] = animals_needed_to_learn_immunity
         subImmuneByStudyingAnimal(animal_caught_species_id_number)
     }
     mySprite.destroy()
-    sub.say("" + sprites.readDataString(mySprite, "species") + " #" + (num_animals_caught + 1), 500)
     // Faster animals are worth more points.
     info.changeScoreBy(animal_caught_species_id_number)
 }
 function fillAnimalArrays () {
     immunity_text_list = [
-    "By studying the turtle, you learned to harden your shell.",
-    "By studying the crab, you learned to use pinchers.",
-    "By studying the green fish, you learned to blend into the grass.",
-    "By studying the octopus, you learn to change colors, and deploy ink.",
-    "By studying the pink fish, you learn to blend into the coral.",
-    "By studying the narwhal, you learn to use a horn defensively.",
-    "By studying the ray, you learn to use a stinger, and blend into the bottom.",
-    "By studying the whale, you learn to use your size to your advantage.",
-    "By studying the pufferfish, you learn to discourage this shark from eating you."
+    "Studying the turtle, you learned to harden your shell.",
+    "Studying the crab, you learned to use pinchers.",
+    "Studying the green fish, you learned to blend into the grass.",
+    "Studying the octopus, you learn to change colors, and deploy ink.",
+    "Studying the pink fish, you learn to blend into the coral.",
+    "Studying the narwhal, you learn to use a horn defensively.",
+    "Studying the ray, you learn to use a stinger, and blend into the bottom.",
+    "Studying the whale, you learn to use your size to your advantage.",
+    "Studying the pufferfish, you learn how spines deter predators from eating you."
     ]
     immunity_badge_list = [
     img`
@@ -612,6 +615,17 @@ function fillAnimalArrays () {
     0,
     0
     ]
+    immunity_badge_awarded = [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+    ]
 }
 let animal_sprite: Sprite = null
 let animal_speed = 0
@@ -624,6 +638,7 @@ let num_animals_caught = 0
 let animal_caught_species_id_number = 0
 let immunity_badge_list: Image[] = []
 let new_badge: Sprite = null
+let immunity_badge_awarded: number[] = []
 let num_caught_list: number[] = []
 let immunity_text_list: string[] = []
 let immunity_sub_image_list: Image[] = []
@@ -793,7 +808,7 @@ let left_shark_image = img`
     `.clone()
 left_shark_image.flipX()
 fillAnimalArrays()
-animals_needed_to_learn_immunity = 3
+animals_needed_to_learn_immunity = 5
 current_immunity = -1
 game.onUpdateInterval(5000, function () {
     shark = sprites.createProjectileFromSide(left_shark_image, 90, 0)
