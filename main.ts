@@ -1,5 +1,9 @@
 namespace SpriteKind {
     export const Immunity = SpriteKind.create()
+    export const Badge = SpriteKind.create()
+}
+function updateImmunityAchievementBadge () {
+	
 }
 function displayDialog (text: string) {
     game.setDialogFrame(img`
@@ -31,10 +35,8 @@ function displayDialog (text: string) {
     game.showLongText(text, DialogLayout.Center)
 }
 function subImmuneByStudyingAnimal (num: number) {
-    sub.setImage(immunity_image_list[num])
-}
-function updateImmunityDisplay () {
-	
+    sub.setImage(immunity_sub_image_list[num])
+    current_immunity = num
 }
 function displayStartScreen () {
     scene.setBackgroundColor(4)
@@ -62,15 +64,9 @@ scene.setBackgroundImage(ScienceSubTitle)
     game.showLongText("Venture into the sea, study the animals. Press \"A\" to start.", DialogLayout.Bottom)
 }
 function sharkEncountered (mySprite: Sprite) {
-    immune = 0
-    for (let index2 = 0; index2 <= 9; index2++) {
-        if (num_caught_list[index2] == animals_needed_to_learn_immunity) {
-            immune = index2 + 1
-        }
-    }
-    if (immune > 0) {
-        displayDialog("" + immunity_text_list[immune - 1] + " You caught this shark!")
-        num_caught_list[immune - 1] = 0
+    if (current_immunity > -1) {
+        displayDialog("" + immunity_text_list[current_immunity] + " You caught this shark!")
+        num_caught_list[current_immunity] = 0
         num_caught_list[9] = num_caught_list[9] + 1
         info.changeScoreBy(50)
         loseImmunity()
@@ -92,6 +88,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
     }
 })
 function loseImmunity () {
+    new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
+    new_badge.setPosition(12 * current_immunity, 4)
     sub.setImage(img`
         . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
         . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
@@ -110,6 +108,7 @@ function loseImmunity () {
         . f f b f d d d d d d d d d d d d d d d d d d d d d d f b f f . 
         . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
         `)
+    current_immunity = -1
 }
 function nonSharkEncountered (mySprite: Sprite) {
     music.baDing.play()
@@ -139,7 +138,99 @@ function fillAnimalArrays () {
     "By studying the whale, you learn to use your size to your advantage.",
     "By studying the pufferfish, you learn to discourage this shark from eating you."
     ]
-    immunity_image_list = [
+    immunity_badge_list = [
+    img`
+        . . . 9 9 . . . 
+        . . 9 7 8 9 . . 
+        . 9 7 8 7 8 9 . 
+        . 9 8 7 8 7 9 . 
+        . 9 7 8 7 8 9 . 
+        . 9 8 7 8 7 9 . 
+        . . 9 8 7 9 . . 
+        . . . 9 9 . . . 
+        `,
+    img`
+        . . 4 4 . 4 . . 
+        . 4 4 . . . 4 . 
+        . 4 . . . 4 4 . 
+        . 4 4 . . . 4 . 
+        . 4 . . . 4 4 . 
+        . 4 4 . . . 4 . 
+        . 4 4 4 4 4 4 . 
+        . . 4 4 4 4 . . 
+        `,
+    img`
+        . . 9 . . 9 . . 
+        . . 9 . . 9 . . 
+        . 9 . . . . 9 . 
+        . 9 . 9 . . 9 . 
+        . 9 . . 9 . 9 . 
+        . . 9 . 9 . 9 9 
+        . . 9 . 9 . . 9 
+        . . 9 . 9 . . 9 
+        `,
+    img`
+        . . . f f f . . 
+        . . f f f f f f 
+        . . f f f f f f 
+        . f f f f f f f 
+        f f f f f f f . 
+        f f f f f f f . 
+        . f f f f f . . 
+        . . . . f f . . 
+        `,
+    img`
+        . . . . . . . . 
+        . 3 3 . 3 3 . 2 
+        3 3 2 2 2 3 2 . 
+        3 6 b 3 2 3 2 3 
+        3 6 3 2 2 3 6 3 
+        3 6 3 3 6 3 3 6 
+        . 3 2 3 2 6 3 6 
+        . 3 6 . 2 2 3 . 
+        `,
+    img`
+        . . . . 6 . . . 
+        . . . 6 6 . . . 
+        . . . 6 5 . . . 
+        . . . 5 6 . . . 
+        . . . 6 6 . . . 
+        . . . 6 5 . . . 
+        . . . 5 6 . . . 
+        . . . 6 6 . . . 
+        `,
+    img`
+        . . . . . . . b 
+        . . . . . . b . 
+        . . . . . b . . 
+        . . . . b . . . 
+        . . . b . . . . 
+        . . b . . . . . 
+        . b . . . . . . 
+        b . . . . . . . 
+        `,
+    img`
+        2 2 2 2 2 2 2 2 
+        2 2 6 2 6 2 6 2 
+        2 6 b b b b 2 2 
+        2 2 b a a b 2 2 
+        2 2 b a a b 2 2 
+        2 2 b b b b 2 2 
+        2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 
+        `,
+    img`
+        e . . e . . . e 
+        . e . e . . e . 
+        . . e e e e . . 
+        e e e d d e e e 
+        . . e d d e . . 
+        . . e e e e . . 
+        . e . . e . e . 
+        e . . . e . . e 
+        `
+    ]
+    immunity_sub_image_list = [
     img`
         . . . . . . . . . . . 9 9 9 9 9 9 . . . . . . . . . . . . . . . 
         . . . . . . . . . . 9 7 8 7 8 9 8 9 . . . . . . . . . . . . . . 
@@ -301,24 +392,6 @@ function fillAnimalArrays () {
         f . . . f . . . . f . . . . . f . . . . . f . . . . . f . . . f 
         . . . f . . . . . f . . . . . f . . . . . . f . . . . . f . . . 
         . . f . . . . . f . . . . . . f . . . . . . . f . . . . . f . . 
-        `,
-    img`
-        . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
-        . . f f f f f f f f d d e d e e e e f f f f f f f f f f f f . . 
-        . f f c f d e d e e e e e e e e e e e e e e e e d e d f c f f . 
-        f f c b f e d e e d d e e e e e e e e e e d d e e d e f b c f f 
-        f c b b f d e e d c b d e e e e e e e e d c b d e e d f b b c f 
-        f b b b f e e d c b b b d e e e e e e d c b b b d e e f b b b f 
-        f f f f f e e d b b b b d e e e e e e d b b b b d e e f f f f f 
-        f b b b f e e e d b b d e e e e e e e e d b b d e e e f b b b f 
-        f b b b f e d e d d d e d e d e d e d e d d d e d e d f b b b f 
-        f f b b f d e d e d e d e d e d e d e d e d e d e d e f b b f f 
-        . f f b f d d d d d d d d d d d d d d d d d d d d d d f b f f . 
-        . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
         `
     ]
     animal_image_list = [
@@ -549,10 +622,12 @@ let animal_names: string[] = []
 let animal_image_list: Image[] = []
 let num_animals_caught = 0
 let animal_caught_species_id_number = 0
-let immunity_text_list: string[] = []
+let immunity_badge_list: Image[] = []
+let new_badge: Sprite = null
 let num_caught_list: number[] = []
-let immune = 0
-let immunity_image_list: Image[] = []
+let immunity_text_list: string[] = []
+let immunity_sub_image_list: Image[] = []
+let current_immunity = 0
 let animals_needed_to_learn_immunity = 0
 let sub: Sprite = null
 displayStartScreen()
@@ -719,6 +794,7 @@ let left_shark_image = img`
 left_shark_image.flipX()
 fillAnimalArrays()
 animals_needed_to_learn_immunity = 3
+current_immunity = -1
 game.onUpdateInterval(5000, function () {
     shark = sprites.createProjectileFromSide(left_shark_image, 90, 0)
     shark.y = randint(10, scene.screenHeight() - 10)
