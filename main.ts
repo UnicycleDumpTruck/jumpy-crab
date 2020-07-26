@@ -110,6 +110,7 @@ function loseImmunity () {
         info.changeScoreBy(300)
     }
     current_immunity = -1
+    level += 0.1
 }
 function nonSharkEncountered (mySprite: Sprite) {
     music.baDing.play()
@@ -811,15 +812,40 @@ left_shark_image.flipX()
 fillAnimalArrays()
 animals_needed_to_learn_immunity = 5
 current_immunity = -1
+let level = 1
 game.onUpdateInterval(5000, function () {
-    shark = sprites.createProjectileFromSide(left_shark_image, 90, 0)
+    shark = sprites.createProjectileFromSide(left_shark_image, level * 90, 0)
     shark.y = randint(10, scene.screenHeight() - 10)
     sprites.setDataString(shark, "species", "Shark")
+})
+game.onUpdateInterval(9000, function () {
+    if (level > 1.7) {
+        shark = sprites.createProjectileFromSide(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . d d d d . . . . . . 
+            . . . . . d d d d . . . . . . . 
+            d d d d d d d d d d d d d . . . 
+            d d f d f d d d d d d d d d d . 
+            . e e e e e e e d d d d d d d d 
+            . . e c c c e e e e e e e e d d 
+            . . . e e e e e e e e e e e e d 
+            . . . . . d d . d d . . . . e d 
+            . . . . . d . . . d . . . . d d 
+            . . . . . . . . . . . d d d d d 
+            . . . . . . . . . . d d d d d . 
+            . . . . . . . . . . . . . d d . 
+            . . . . . . . . . . . . . d d . 
+            . . . . . . . . . . . . . d . . 
+            . . . . . . . . . . . . . . . . 
+            `, level * -90, 0)
+        shark.y = randint(10, scene.screenHeight() - 10)
+        sprites.setDataString(shark, "species", "Shark")
+    }
 })
 game.onUpdateInterval(1000, function () {
     animal_choice = randint(0, 8)
     animal_speed = animal_speed_list[animal_choice]
-    animal_sprite = sprites.createProjectileFromSide(animal_image_list[animal_choice], animal_speed, 0)
+    animal_sprite = sprites.createProjectileFromSide(animal_image_list[animal_choice], animal_speed * level, 0)
     // Choose random height for animal.
     animal_sprite.y = randint(10, scene.screenHeight() - 10)
     sprites.setDataString(animal_sprite, "species", animal_names[animal_choice])
