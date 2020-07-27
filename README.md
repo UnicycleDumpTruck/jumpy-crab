@@ -11,7 +11,6 @@ The scoring system is set up to reward players for studying all of the animals. 
 - The aforementioned immunity re-earning bug should be squashed. 
 - Perhaps the current level could be shown on the screen?
 - Better descriptions of biomimicry?
-- Increase music tempo with level
 
 ## Edit this Game
 
