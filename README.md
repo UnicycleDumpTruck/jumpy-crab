@@ -8,7 +8,10 @@ The scoring system is set up to reward players for studying all of the animals. 
 
 ## Future plans
 
-The aforementioned immunity re-earning bug should be squashed. Perhaps the current level could be shown on the screen.
+- The aforementioned immunity re-earning bug should be squashed. 
+- Perhaps the current level could be shown on the screen?
+- Better descriptions of biomimicry?
+- Increase music tempo with level
 
 ## Edit this Game
 
@@ -16,7 +19,7 @@ To edit this repository in MakeCode:
 
 * open https://arcade.makecode.com/
 * click on **Import** then click on **Import URL**
-* paste the repository URL and click import
+* paste the repository URL https://github.com/UnicycleDumpTruck/science-sub and click import
 
 ## Blocks preview
 
