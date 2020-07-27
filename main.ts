@@ -111,6 +111,7 @@ function loseImmunity () {
     }
     current_immunity = -1
     level += 0.1
+    music.changeTempoBy(20)
 }
 function nonSharkEncountered (mySprite: Sprite) {
     music.baDing.play()
