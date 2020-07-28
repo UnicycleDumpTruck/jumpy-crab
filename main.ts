@@ -255,7 +255,7 @@ function fillAnimalArrays () {
     "Studying the turtle, you learned to harden your shell.",
     "Studying the crab, you learned to use pinchers.",
     "Studying the green fish, you learned to blend into the grass.",
-    "Studying the octopus, you learn to change colors, and deploy ink.",
+    "Studying the octopus, you learn to use tentacles.",
     "Studying the pink fish, you learn to blend into the coral.",
     "Studying the narwhal, you learn to use a horn defensively.",
     "Studying the ray, you learn to use a stinger, and blend into the bottom.",
@@ -492,9 +492,9 @@ function fillAnimalArrays () {
         . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . . 
         `,
     img`
-        f . f . . f . . . . . . . . . . . . . . . . f . . . f . . f . . 
-        f . . f . . f . . . . f f f f f f . . . . f . . . f . . f . . . 
-        . f . . f . . f . . f d e d e e e f . . f . . . f . . f . . . f 
+        . . . . . f . . . . . . . . . . . . . . . . f . . . . . . . . . 
+        . . . f . . f . . . . f f f f f f . . . . f . . . f . . . . . . 
+        . f . . f . . f . . f d e d e e e f . . f . . . f . . f . . . . 
         . f . . f . . f . . f d d e e e e f . . f . . . f . . f . . f . 
         . . f . . f . f . . f d e d e e e f . . f . . f . . f . . f . . 
         . . f . . f . . f . f d d e e e e f . . f . . f . . f . f . . . 
@@ -513,9 +513,9 @@ function fillAnimalArrays () {
         . . . f . . . f . . . f f . . f . . . f . . . . f . . . f . . . 
         . . f . . . f . . . . f . . . f . . . . f . . . . f . . . f . . 
         . f . . . f . . . . f . . . . f . . . . . f . . . . f . . . f . 
-        f . . . f . . . . f . . . . . f . . . . . f . . . . . f . . . f 
+        . . . . f . . . . f . . . . . f . . . . . f . . . . . f . . . . 
         . . . f . . . . . f . . . . . f . . . . . . f . . . . . f . . . 
-        . . f . . . . . f . . . . . . f . . . . . . . f . . . . . f . . 
+        . . . . . . . . f . . . . . . f . . . . . . . f . . . . . . . . 
         `
     ]
     animal_image_list = [
