@@ -766,8 +766,6 @@ let immunity_sub_image_list: Image[] = []
 let current_immunity = 0
 let animals_needed_to_learn_immunity = 0
 let sub: Sprite = null
-let BIOMIMICRY = null
-let ScienceSubTitle = null
 displayStartScreen()
 scene.setBackgroundImage(img`
     a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a 
