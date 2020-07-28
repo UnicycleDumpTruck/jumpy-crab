@@ -12,7 +12,7 @@ The scoring system is set up to reward players for studying all of the animals. 
 - Perhaps the current level could be shown on the screen?
 - Better descriptions of biomimicry?
 
-## Thanks To
+## Pixel Art
 Thanks to Scott Shamblee for the awesome pixel art of the animals!
 
 ## Fonts
