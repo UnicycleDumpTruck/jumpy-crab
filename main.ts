@@ -256,7 +256,7 @@ function nonSharkEncountered (mySprite: Sprite) {
         sub.say("" + sprites.readDataString(mySprite, "species") + " #" + (num_animals_caught + 1), 500)
         subImmuneByStudyingAnimal(animal_caught_species_id_number)
     } else {
-        sub.say("" + sprites.readDataString(mySprite, "species") + num_animals_caught + "spent", 500)
+        sub.say("" + sprites.readDataString(mySprite, "species"), 500)
     }
     mySprite.destroy()
     // Faster animals are worth more points.
