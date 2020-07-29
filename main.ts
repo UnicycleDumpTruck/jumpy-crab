@@ -2,6 +2,34 @@ namespace SpriteKind {
     export const Immunity = SpriteKind.create()
     export const Badge = SpriteKind.create()
 }
+function useImmunity () {
+    sub.setImage(img`
+        . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
+        . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
+        . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
+        . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
+        . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
+        . . f f f f f f f f d d e d e e e e f f f f f f f f f f f f . . 
+        . f f c f d e d e e e e e e e e e e e e e e e e d e d f c f f . 
+        f f c b f e d e e d d e e e e e e e e e e d d e e d e f b c f f 
+        f c b b f d e e d c b d e e e e e e e e d c b d e e d f b b c f 
+        f b b b f e e d c b b b d e e e e e e d c b b b d e e f b b b f 
+        f f f f f e e d b b b b d e e e e e e d b b b b d e e f f f f f 
+        f b b b f e e e d b b d e e e e e e e e d b b d e e e f b b b f 
+        f b b b f e d e d d d e d e d e d e d e d d d e d e d f b b b f 
+        f f b b f d e d e d e d e d e d e d e d e d e d e d e f b b f f 
+        . f f b f d d d d d d d d d d d d d d d d d d d d d d f b f f . 
+        . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
+        `)
+    if (immunity_badge_awarded[current_immunity] == 0) {
+        new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
+        new_badge.setPosition(12 * current_immunity + 4, 4)
+        info.changeScoreBy(300)
+    }
+    current_immunity = -1
+    level += 0.1
+    music.changeTempoBy(20)
+}
 function displayDialog (text: string) {
     game.setDialogFrame(img`
         . . e e e e e e e e e e e e e e e e e e e e . . 
@@ -32,6 +60,19 @@ function displayDialog (text: string) {
     game.showLongText(text, DialogLayout.Center)
 }
 function subImmuneByStudyingAnimal (num: number) {
+    if (current_immunity > -1) {
+        new_badge = sprites.create(img`
+            4 . . . . . . 4 
+            . 4 . . . . 4 . 
+            . . 4 . . 4 . . 
+            . . . 4 . . . . 
+            . . . . 4 . . . 
+            . . 4 . . 4 . . 
+            . 4 . . . . 4 . 
+            4 . . . . . . 4 
+            `, SpriteKind.Badge)
+        new_badge.setPosition(12 * current_immunity + 4, 4)
+    }
     sub.setImage(immunity_sub_image_list[num])
     current_immunity = num
 }
@@ -182,10 +223,9 @@ function sharkEncountered (mySprite: Sprite) {
     if (current_immunity > -1) {
         music.magicWand.play()
         displayDialog("" + immunity_text_list[current_immunity] + " You caught this shark!")
-        num_caught_list[current_immunity] = 0
         num_caught_list[9] = num_caught_list[9] + 1
         info.changeScoreBy(50)
-        loseImmunity()
+        useImmunity()
         if (num_caught_list[9] == 9) {
             music.stopAllSounds()
             game.over(true, effects.bubbles)
@@ -203,34 +243,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
         nonSharkEncountered(otherSprite)
     }
 })
-function loseImmunity () {
-    sub.setImage(img`
-        . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
-        . . f f f f f f f f d d e d e e e e f f f f f f f f f f f f . . 
-        . f f c f d e d e e e e e e e e e e e e e e e e d e d f c f f . 
-        f f c b f e d e e d d e e e e e e e e e e d d e e d e f b c f f 
-        f c b b f d e e d c b d e e e e e e e e d c b d e e d f b b c f 
-        f b b b f e e d c b b b d e e e e e e d c b b b d e e f b b b f 
-        f f f f f e e d b b b b d e e e e e e d b b b b d e e f f f f f 
-        f b b b f e e e d b b d e e e e e e e e d b b d e e e f b b b f 
-        f b b b f e d e d d d e d e d e d e d e d d d e d e d f b b b f 
-        f f b b f d e d e d e d e d e d e d e d e d e d e d e f b b f f 
-        . f f b f d d d d d d d d d d d d d d d d d d d d d d f b f f . 
-        . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
-        `)
-    if (immunity_badge_awarded[current_immunity] == 0) {
-        new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
-        new_badge.setPosition(12 * current_immunity + 4, 4)
-        info.changeScoreBy(300)
-    }
-    current_immunity = -1
-    level += 0.1
-    music.changeTempoBy(20)
-}
 function nonSharkEncountered (mySprite: Sprite) {
     music.baDing.play()
     sub.startEffect(effects.trail, 500)
@@ -240,11 +252,11 @@ function nonSharkEncountered (mySprite: Sprite) {
         num_caught_list[animal_caught_species_id_number] = num_animals_caught + 1
         sub.say("" + sprites.readDataString(mySprite, "species") + " #" + (num_animals_caught + 1), 500)
     } else if (num_animals_caught == animals_needed_to_learn_immunity - 1) {
-        sub.say("" + sprites.readDataString(mySprite, "species") + " #" + (num_animals_caught + 1), 500)
         num_caught_list[animal_caught_species_id_number] = animals_needed_to_learn_immunity
+        sub.say("" + sprites.readDataString(mySprite, "species") + " #" + (num_animals_caught + 1), 500)
         subImmuneByStudyingAnimal(animal_caught_species_id_number)
     } else {
-        sub.say("" + sprites.readDataString(mySprite, "species"), 500)
+        sub.say("" + sprites.readDataString(mySprite, "species") + num_animals_caught + "spent", 500)
     }
     mySprite.destroy()
     // Faster animals are worth more points.
@@ -324,23 +336,23 @@ function fillAnimalArrays () {
         . . . 6 6 . . . 
         `,
     img`
-        . . . . . . . b 
-        . . . . . . b . 
-        . . . . . b . . 
-        . . . . b . . . 
-        . . . b . . . . 
+        . . . b b b b b 
+        . . . b . . b b 
+        . . . b . b . b 
+        . . . b b . . b 
+        . . . b b b b b 
         . . b . . . . . 
         . b . . . . . . 
         b . . . . . . . 
         `,
     img`
-        2 2 2 2 2 2 2 2 
-        2 2 6 2 6 2 6 2 
-        2 6 b b b b 2 2 
-        2 2 b a a b 2 2 
-        2 2 b a a b 2 2 
-        2 2 b b b b 2 2 
-        2 2 2 2 2 2 2 2 
+        . . b . b b . . 
+        . b . b . b b . 
+        b b b . b . b b 
+        b . . b . . . b 
+        b . . b b . . . 
+        . . . b b . . b 
+        b . . b b . . . 
         2 2 2 2 2 2 2 2 
         `,
     img`
@@ -757,12 +769,12 @@ let animal_names: string[] = []
 let animal_image_list: Image[] = []
 let num_animals_caught = 0
 let animal_caught_species_id_number = 0
-let immunity_badge_list: Image[] = []
-let new_badge: Sprite = null
-let immunity_badge_awarded: number[] = []
 let num_caught_list: number[] = []
 let immunity_text_list: string[] = []
 let immunity_sub_image_list: Image[] = []
+let immunity_badge_list: Image[] = []
+let new_badge: Sprite = null
+let immunity_badge_awarded: number[] = []
 let current_immunity = 0
 let animals_needed_to_learn_immunity = 0
 let sub: Sprite = null
