@@ -3,7 +3,8 @@
 This game is about a submarine on a mission to study ocean creatures. The player pilots the submarine, trying to catch animals to study. In the beginning, sharks will be too dangerous to catch - contacting one will end the game. The game tracks how many of each animal is caught. When enough of a particular species are caught, the submarine is transformed, mimicing some features of the studied animal. This biomimicry is immunity while catching one shark. Catching a shark causes the loss of that particular modification but earns a badge (and extra points) for using the knowledge. The speed of all animals increases each time a shark is caught. There are nine animals besides the shark, and nine sharks must be caught to win the game. The premise is that studying how the other animals defend themselves against sharks allows the submarine to use those techniques to catch sharks for study. 
 
 ## Playable Simulator
-![Play the latest release, v2.0](https://makecode.com/_UvKKP4H1C0cz)
+Play the latest release, v2.0.0:  
+https://makecode.com/_UvKKP4H1C0cz
 
 
 ## Scoring
