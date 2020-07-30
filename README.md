@@ -36,7 +36,7 @@ To edit this repository in MakeCode:
 This image shows the blocks code from the last commit in master.
 This image may take a few minutes to refresh.
 
-![A rendered view of the blocks](https://github.com/babywrassler/science-sub/raw/master/.makecode/blocks.png)
+![A rendered view of the blocks](https://github.com/babywrassler/science-sub/raw/master/.github/makecode/blocks.png)
 
 ## Supported targets
 
