@@ -21,14 +21,12 @@ function useImmunity () {
         . f f b f d d d d d d d d d d d d d d d d d d d d d d f b f f . 
         . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
         `)
-    if (immunity_badge_awarded[current_immunity] == 0) {
-        new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
-        new_badge.setPosition(12 * current_immunity + 4, 4)
-        info.changeScoreBy(300)
-    }
+    new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
+    new_badge.setPosition(12 * current_immunity + 4, 4)
+    info.changeScoreBy(300)
     current_immunity = -1
     level += 0.1
-    music.changeTempoBy(20)
+    music.changeTempoBy(25)
 }
 function displayDialog (text: string) {
     game.setDialogFrame(img`
@@ -60,21 +58,23 @@ function displayDialog (text: string) {
     game.showLongText(text, DialogLayout.Center)
 }
 function subImmuneByStudyingAnimal (num: number) {
+    music.magicWand.play()
     if (current_immunity > -1) {
         new_badge = sprites.create(img`
-            4 . . . . . . 4 
+            . . 4 4 4 4 . . 
             . 4 . . . . 4 . 
-            . . 4 . . 4 . . 
-            . . . 4 . . . . 
-            . . . . 4 . . . 
-            . . 4 . . 4 . . 
+            4 . 4 . . . . 4 
+            4 . . 4 . . . 4 
+            4 . . . 4 . . 4 
+            4 . . . . 4 . 4 
             . 4 . . . . 4 . 
-            4 . . . . . . 4 
+            . . 4 4 4 4 . . 
             `, SpriteKind.Badge)
         new_badge.setPosition(12 * current_immunity + 4, 4)
     }
     sub.setImage(immunity_sub_image_list[num])
     current_immunity = num
+    sub.say(immunity_idea_list[num], 1000)
 }
 function displayStartScreen () {
     scene.setBackgroundColor(4)
@@ -221,7 +221,7 @@ function displayStartScreen () {
 }
 function sharkEncountered (mySprite: Sprite) {
     if (current_immunity > -1) {
-        music.magicWand.play()
+        music.powerUp.play()
         displayDialog("" + immunity_text_list[current_immunity] + " You caught this shark!")
         num_caught_list[9] = num_caught_list[9] + 1
         info.changeScoreBy(50)
@@ -263,16 +263,27 @@ function nonSharkEncountered (mySprite: Sprite) {
     info.changeScoreBy(animal_caught_species_id_number)
 }
 function fillAnimalArrays () {
+    immunity_idea_list = [
+    "Hard shell!",
+    "Pinchers!",
+    "Camouflage!",
+    "Tentacles!",
+    "Camouflage!",
+    "Horns!",
+    "Low profile!",
+    "Size!",
+    "Spines!"
+    ]
     immunity_text_list = [
     "Studying the turtle, you learned to harden your shell.",
     "Studying the crab, you learned to use pinchers.",
     "Studying the green fish, you learned to blend into the grass.",
-    "Studying the octopus, you learn to use tentacles.",
-    "Studying the pink fish, you learn to blend into the coral.",
-    "Studying the narwhal, you learn to use a horn defensively.",
-    "Studying the ray, you learn to use a stinger, and blend into the bottom.",
-    "Studying the whale, you learn to use your size to your advantage.",
-    "Studying the pufferfish, you learn how spines deter predators from eating you."
+    "Studying the octopus, you learned to use tentacles.",
+    "Studying the pink fish, you learned to blend into the coral.",
+    "Studying the narwhal, you learned to use a horn defensively.",
+    "Studying the ray, you learned to use a stinger, and blend into the bottom.",
+    "Studying the whale, you learned to use your size to your advantage.",
+    "Studying the pufferfish, you learned spines deter predators from eating you."
     ]
     immunity_badge_list = [
     img`
@@ -748,17 +759,6 @@ function fillAnimalArrays () {
     0,
     0
     ]
-    immunity_badge_awarded = [
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
-    ]
 }
 let animal_sprite: Sprite = null
 let animal_speed = 0
@@ -771,10 +771,10 @@ let num_animals_caught = 0
 let animal_caught_species_id_number = 0
 let num_caught_list: number[] = []
 let immunity_text_list: string[] = []
+let immunity_idea_list: string[] = []
 let immunity_sub_image_list: Image[] = []
 let immunity_badge_list: Image[] = []
 let new_badge: Sprite = null
-let immunity_badge_awarded: number[] = []
 let current_immunity = 0
 let animals_needed_to_learn_immunity = 0
 let sub: Sprite = null
@@ -943,7 +943,7 @@ left_shark_image.flipX()
 fillAnimalArrays()
 animals_needed_to_learn_immunity = 5
 current_immunity = -1
-let level = 1
+let level = 0.8
 game.onUpdateInterval(5000, function () {
     shark = sprites.createProjectileFromSide(left_shark_image, level * 90, 0)
     shark.y = randint(10, scene.screenHeight() - 10)
