@@ -3,6 +3,16 @@ namespace SpriteKind {
     export const Badge = SpriteKind.create()
 }
 function useImmunity () {
+    new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
+    new_badge.setPosition(12 * current_immunity + 4, 4)
+    info.changeScoreBy(300)
+    current_immunity = -1
+    level += 0.1
+    music.changeTempoBy(25)
+    while (morph_in_progress) {
+        pause(0.01)
+    }
+    morph_in_progress = true
     sub.setImage(img`
         . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
         . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
@@ -21,12 +31,7 @@ function useImmunity () {
         . f f b f d d d d d d d d d d d d d d d d d d d d d d f b f f . 
         . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
         `)
-    new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
-    new_badge.setPosition(12 * current_immunity + 4, 4)
-    info.changeScoreBy(300)
-    current_immunity = -1
-    level += 0.1
-    music.changeTempoBy(25)
+    morph_in_progress = false
 }
 function displayDialog (text: string) {
     game.setDialogFrame(img`
