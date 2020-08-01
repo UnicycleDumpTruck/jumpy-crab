@@ -5,7 +5,7 @@
     "dependencies": {
         "device": "*",
         "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.0.6",
-        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.2.10"
+        "pxt-image-morph": "github:unicycledumptruck/pxt-image-morph#v0.2.2"
     },
     "files": [
         "main.blocks",

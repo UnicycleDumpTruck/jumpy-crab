@@ -2,6 +2,26 @@ namespace SpriteKind {
     export const Immunity = SpriteKind.create()
     export const Badge = SpriteKind.create()
 }
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    imagemorph.morph(sub, img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `)
+})
 function useImmunity () {
     sub.setImage(img`
         . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
@@ -72,9 +92,14 @@ function subImmuneByStudyingAnimal (num: number) {
             `, SpriteKind.Badge)
         new_badge.setPosition(12 * current_immunity + 4, 4)
     }
-    sub.setImage(immunity_sub_image_list[num])
     current_immunity = num
     sub.say(immunity_idea_list[num], 1000)
+    while (morph_in_progress) {
+        pause(0.01)
+    }
+    morph_in_progress = true
+    imagemorph.morph(sub, immunity_sub_image_list[num])
+    morph_in_progress = false
 }
 function displayStartScreen () {
     scene.setBackgroundColor(4)
@@ -487,6 +512,14 @@ function fillAnimalArrays () {
         . . . . . . . f f f f f f f f f f f f f f f f f f . . . . . . . 
         `,
     img`
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . . . . f f f f f f . . . . . . . 
         . . . . . . . . . . . . . . . . . . f c b b b b c f . . . . . . 
         . . . . . . . . . . . . . . . . . f c b c b b b b c f . . . . . 
@@ -763,10 +796,11 @@ let num_animals_caught = 0
 let animal_caught_species_id_number = 0
 let num_caught_list: number[] = []
 let immunity_text_list: string[] = []
-let immunity_idea_list: string[] = []
 let immunity_sub_image_list: Image[] = []
+let immunity_idea_list: string[] = []
 let immunity_badge_list: Image[] = []
 let new_badge: Sprite = null
+let morph_in_progress = false
 let current_immunity = 0
 let animals_needed_to_learn_immunity = 0
 let sub: Sprite = null
@@ -936,6 +970,7 @@ fillAnimalArrays()
 animals_needed_to_learn_immunity = 5
 current_immunity = -1
 let level = 0.8
+morph_in_progress = false
 game.onUpdateInterval(5000, function () {
     shark = sprites.createProjectileFromSide(left_shark_image, level * 90, 0)
     shark.y = randint(10, scene.screenHeight() - 10)
