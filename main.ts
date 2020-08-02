@@ -13,7 +13,7 @@ function useImmunity () {
         pause(0.01)
     }
     morph_in_progress = true
-    sub.setImage(img`
+    imagemorph.morph(sub, img`
         . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
         . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
         . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
