@@ -255,6 +255,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
 })
 function nonSharkEncountered (mySprite: Sprite) {
     music.baDing.play()
+    mySprite.destroy()
+    // Faster animals are worth more points.
+    info.changeScoreBy(animal_caught_species_id_number)
     sub.startEffect(effects.trail, 500)
     animal_caught_species_id_number = sprites.readDataNumber(mySprite, "animal_index")
     num_animals_caught = num_caught_list[animal_caught_species_id_number]
@@ -268,9 +271,6 @@ function nonSharkEncountered (mySprite: Sprite) {
     } else {
         sub.say("" + sprites.readDataString(mySprite, "species"), 500)
     }
-    mySprite.destroy()
-    // Faster animals are worth more points.
-    info.changeScoreBy(animal_caught_species_id_number)
 }
 function fillAnimalArrays () {
     immunity_idea_list = [
