@@ -2,16 +2,10 @@ namespace SpriteKind {
     export const Immunity = SpriteKind.create()
     export const Badge = SpriteKind.create()
 }
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    sub.setVelocity(0, -100)
-    while (sub.y > 10) {
-        pause(10)
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (sub.vy == 0) {
+        sub.setVelocity(0, -100)
     }
-    sub.setVelocity(0, 100)
-    while (sub.y < 106) {
-        pause(10)
-    }
-    sub.y = 106
 })
 function useImmunity () {
     new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
@@ -256,6 +250,7 @@ function nonSharkEncountered (mySprite: Sprite) {
         num_caught_list[animal_caught_species_id_number] = animals_needed_to_learn_immunity
         sub.say("" + sprites.readDataString(mySprite, "species") + " #" + (num_animals_caught + 1), 500)
         subImmuneByStudyingAnimal(animal_caught_species_id_number)
+        useImmunity()
     } else {
         sub.say("" + sprites.readDataString(mySprite, "species"), 500)
     }
@@ -377,166 +372,166 @@ function fillAnimalArrays () {
     ]
     immunity_sub_image_list = [
     img`
-        . . . . . . . . . . . 9 9 9 9 9 9 . . . . . . . . . . . . . . . 
-        . . . . . . . . . . 9 7 8 7 8 9 8 9 . . . . . . . . . . . . . . 
-        . . . . . . . . . . 9 7 7 8 9 8 9 9 . . . . . . . . . . . . . . 
-        . . . . . . . . . . 9 7 8 9 8 7 8 9 . . . . . . . . . . . . . . 
-        . . . . . . . . . . 9 7 9 8 7 8 8 9 . . . . . . . . . . . . . . 
-        . . 9 9 9 9 9 9 9 9 7 9 8 7 8 8 8 8 9 9 9 9 9 9 9 9 9 9 9 9 . . 
-        . 9 9 c 9 7 8 7 9 8 9 8 7 8 8 8 8 8 8 8 9 8 9 8 7 8 7 9 c 9 9 . 
-        9 9 c b 9 8 7 9 8 7 7 9 8 8 8 8 8 8 8 9 8 7 7 9 8 7 8 9 b c 9 9 
-        9 c b b 9 7 9 8 7 c b 7 9 8 8 8 8 8 9 8 7 c b 7 9 8 7 9 b b c 9 
-        9 b b b 9 9 8 7 c b b b 7 9 8 8 8 9 8 7 c b b b 7 9 8 9 b b b 9 
-        9 9 9 9 9 9 8 7 b b b b 7 8 9 8 9 8 8 7 b b b b 7 8 9 9 9 9 9 9 
-        9 b b b 9 8 9 8 7 b b 7 8 8 8 9 8 8 8 8 7 b b 7 8 9 8 9 b b b 9 
-        9 b b b 9 7 8 9 7 7 7 8 7 8 9 8 9 8 7 8 7 7 7 8 9 8 7 9 b b b 9 
-        9 9 b b 9 8 8 8 9 7 8 7 8 9 8 8 8 9 8 7 8 7 8 9 8 8 8 9 b b 9 9 
-        . 9 9 b 9 7 8 7 8 9 7 7 9 7 8 7 8 7 9 7 7 7 9 8 7 8 7 9 b 9 9 . 
-        . . 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 . . 
+        . . . . . . . . . . . . . . . . 
+        . . . 4 4 . . . . . . . . . . . 
+        . . 4 4 . . . . . . . 4 4 . . . 
+        . . 4 4 . . 4 . . . . . 4 4 . . 
+        . . 4 4 4 4 4 . . 4 . . 4 4 . . 
+        . 4 4 4 4 4 . . . 4 4 4 4 4 . . 
+        . 4 4 . . . . . . . 4 4 4 4 4 . 
+        . 4 . . . . . . . . . . . . 4 . 
+        . 4 4 4 4 4 4 4 4 4 4 4 4 4 4 . 
+        . . 4 4 4 4 f 4 f 4 4 4 4 4 . . 
+        . . . 4 4 4 4 4 4 4 4 4 4 . . . 
+        . . 4 4 4 4 4 4 4 4 4 4 4 4 . . 
+        . 4 4 . 4 . . . . . . 4 . 4 4 . 
+        . 4 . . 4 . . . . . . 4 . . 4 . 
+        . . 4 . . 4 . . . . 4 . . 4 . . 
+        . . . . . . . . . . . . . . . . 
         `,
     img`
-        . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
-        . . f f f f f f f f d d e d e e e e f f f f f f f f f f f f . . 
-        . f f 4 4 4 4 d e e e e e e e e e e e e e e e e d 4 4 4 4 f f . 
-        f f 4 4 4 4 4 4 e d d e e e e e e e e e e d d e 4 4 4 4 4 4 f f 
-        f 4 4 f f 4 4 4 d c b d e e e e e e e e d c b d 4 4 4 f f 4 4 f 
-        f 4 f . . f 4 4 c b b b d e e e e e e d c b b b 4 4 f . . f 4 f 
-        . . . . . f 4 4 b b b b d e e e e e e d b b b b 4 4 f . . . . . 
-        f 4 f . . f 4 4 d b b d e e e e e e e e d b b d 4 4 f . . f 4 f 
-        f 4 4 f f 4 4 4 d d d e d e d e d e d e d d d e 4 4 4 f f 4 4 f 
-        f f 4 4 4 4 4 4 e d e d e d e d e d e d e d e d 4 4 4 4 4 4 f f 
-        . f f 4 4 4 4 d d d d d d d d d d d d d d d d d d 4 4 4 4 f f . 
-        . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
+        . . . . . . . . . . . . . . . . 
+        . . . 4 4 . . . . . . . . . . . 
+        . . 4 4 . . . . . . . 4 4 . . . 
+        . . 4 4 . . 4 . . . . . 4 4 . . 
+        . . 4 4 4 4 4 . . 4 . . 4 4 . . 
+        . 4 4 4 4 4 . . . 4 4 4 4 4 . . 
+        . 4 4 . . . . . . . 4 4 4 4 4 . 
+        . 4 . . . . . . . . . . . . 4 . 
+        . 4 4 4 4 4 4 4 4 4 4 4 4 4 4 . 
+        . . 4 4 4 4 f 4 f 4 4 4 4 4 . . 
+        . . . 4 4 4 4 4 4 4 4 4 4 . . . 
+        . . 4 4 4 4 4 4 4 4 4 4 4 4 . . 
+        . 4 4 . 4 . . . . . . 4 . 4 4 . 
+        . 4 . . 4 . . . . . . 4 . . 4 . 
+        . . 4 . . 4 . . . . 4 . . 4 . . 
+        . . . . . . . . . . . . . . . . 
         `,
     img`
-        . . . . . . . . . . . 7 8 7 8 7 8 . . . . . . . . . . . . . . . 
-        . . . . . . . . . . 7 7 7 7 7 7 7 7 . . . . . . . . . . . . . . 
-        . . . . . . . . . . 7 8 8 8 8 8 8 7 . . . . . . . . . . . . . . 
-        . . . . . . . . . . 7 7 7 7 7 7 7 7 . . . . . . . . . . . . . . 
-        . . . . . . . . . . 7 8 8 8 8 8 8 7 . . . . . . . . . . . . . . 
-        . . 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 . . 
-        . 7 7 c 7 7 8 7 7 7 7 7 7 8 7 8 7 7 8 7 7 7 7 7 7 8 8 7 c 7 7 . 
-        7 7 c b 7 8 8 7 7 8 8 7 7 8 7 7 8 7 8 7 7 8 8 7 7 8 7 7 b c 7 7 
-        7 c b b 7 7 8 7 8 c b 8 7 8 7 8 7 7 8 7 8 c b 8 7 8 8 7 b b c 7 
-        7 b b b 7 8 8 7 c b b b 7 8 7 7 8 7 8 7 c b b b 7 8 7 7 b b b 7 
-        7 7 7 7 7 7 8 7 b b b b 7 8 7 8 7 7 8 7 b b b b 7 8 8 7 7 7 7 7 
-        7 b b b 7 8 8 7 8 b b 8 7 8 7 7 8 7 8 7 8 b b 8 7 8 7 7 b b b 7 
-        7 b b b 7 7 8 7 7 8 8 7 7 8 7 8 7 7 8 7 7 8 8 7 7 8 8 7 b b b 7 
-        7 7 b b 7 8 8 7 7 7 7 7 7 8 7 7 8 7 8 7 7 7 7 7 7 8 7 7 b b 7 7 
-        . 7 7 b 7 7 7 8 7 8 7 8 7 8 7 8 7 8 7 7 8 7 8 7 8 7 8 7 b 7 7 . 
-        . . 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 . . 
+        . . . . . . . . . . . . . . . . 
+        . . . 4 4 . . . . . . . . . . . 
+        . . 4 4 . . . . . . . 4 4 . . . 
+        . . 4 4 . . 4 . . . . . 4 4 . . 
+        . . 4 4 4 4 4 . . 4 . . 4 4 . . 
+        . 4 4 4 4 4 . . . 4 4 4 4 4 . . 
+        . 4 4 . . . . . . . 4 4 4 4 4 . 
+        . 4 . . . . . . . . . . . . 4 . 
+        . 4 4 4 4 4 4 4 4 4 4 4 4 4 4 . 
+        . . 4 4 4 4 f 4 f 4 4 4 4 4 . . 
+        . . . 4 4 4 4 4 4 4 4 4 4 . . . 
+        . . 4 4 4 4 4 4 4 4 4 4 4 4 . . 
+        . 4 4 . 4 . . . . . . 4 . 4 4 . 
+        . 4 . . 4 . . . . . . 4 . . 4 . 
+        . . 4 . . 4 . . . . 4 . . 4 . . 
+        . . . . . . . . . . . . . . . . 
         `,
     img`
-        . . . f f f f f f f f f f f f f f f f f f f . . . . . . f f f . 
-        . . f f d e d e e e e e d d d e e d e e e f f f f f f f f e e f 
-        . f f e d d e e e e e d e d e e e e e d e d e e e d e e e d e f 
-        f f e d c b d e e d e e e e d f f f f f f f e d e e e d e f f . 
-        f e d c b b b d e e e e e e e f . . . . . f f f f f f f f f . . 
-        f e d b b b b d e e d d e e e f . . . . . . . . . . . . . . . . 
-        f d e d b b d e e e e e e d e f . . f f f f f f f f f f f f f . 
-        f e e d d d e d e e d d e d e f f f f e d e e e d e e e d e e f 
-        f e e e d d e e e e d d e e e e e e d e e e d e e e d e e e d f 
-        f e e d c b d e e e e e e d e e d e f f f f f f f f f f f f f . 
-        f e d c b b b d e e d d e e e f f f f . . . . . . . . . . . . . 
-        f e d b b b b d e e e e e e e f . . . . f f f f f f f f . . . . 
-        f f e d b b d e e e e e e e d f f f f f f e d e e e d f f f f . 
-        . f f d d d e d d d e d e d e e d e e e d e e e d e e e e d e f 
-        . . f f d d d d d d d d d d d e e e d e e f f f f f f d e e e f 
-        . . . f f f f f f f f f f f f f f f f f f f . . . . f f f f f . 
+        . . . . . . . . . . . . . . . . 
+        . . . 4 4 . . . . . . . . . . . 
+        . . 4 4 . . . . . . . 4 4 . . . 
+        . . 4 4 . . 4 . . . . . 4 4 . . 
+        . . 4 4 4 4 4 . . 4 . . 4 4 . . 
+        . 4 4 4 4 4 . . . 4 4 4 4 4 . . 
+        . 4 4 . . . . . . . 4 4 4 4 4 . 
+        . 4 . . . . . . . . . . . . 4 . 
+        . 4 4 4 4 4 4 4 4 4 4 4 4 4 4 . 
+        . . 4 4 4 4 f 4 f 4 4 4 4 4 . . 
+        . . . 4 4 4 4 4 4 4 4 4 4 . . . 
+        . . 4 4 4 4 4 4 4 4 4 4 4 4 . . 
+        . 4 4 . 4 . . . . . . 4 . 4 4 . 
+        . 4 . . 4 . . . . . . 4 . . 4 . 
+        . . 4 . . 4 . . . . 4 . . 4 . . 
+        . . . . . . . . . . . . . . . . 
         `,
     img`
-        . . . . . . . . . . . 5 5 5 5 5 5 . . . . . . . . . . . . . . . 
-        . . . . . . . . . . 5 6 3 6 3 3 3 5 . . . . . . . . . . . . . . 
-        . . . . . . . . . . 5 6 6 3 3 3 3 5 . . . . . . . . . . . . . . 
-        . . . . . . . . . . 5 6 3 6 3 3 3 5 . . . . . . . . . . . . . . 
-        . . . . . . . . . . 5 6 6 3 3 3 3 5 . . . . . . . . . . . . . . 
-        . . 5 5 5 5 5 5 5 5 6 6 3 6 3 3 3 3 5 5 5 5 5 5 5 5 5 5 5 5 . . 
-        . 5 5 c 5 6 3 6 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 6 3 6 5 c 5 5 . 
-        5 5 c b 5 3 6 3 3 6 6 3 3 3 3 3 3 3 3 3 3 6 6 3 3 6 3 5 b c 5 5 
-        5 c b b 5 6 3 3 6 c b 6 3 3 3 3 3 3 3 3 6 c b 6 3 3 6 5 b b c 5 
-        5 b b b 5 3 3 6 c b b b 6 3 3 3 3 3 3 6 c b b b 6 3 3 5 b b b 5 
-        5 5 5 5 5 3 3 6 b b b b 6 3 3 3 3 3 3 6 b b b b 6 3 3 5 5 5 5 5 
-        5 b b b 5 3 3 3 6 b b 6 3 3 3 3 3 3 3 3 6 b b 6 3 3 3 5 b b b 5 
-        5 b b b 5 3 6 3 6 6 6 3 6 3 6 3 6 3 6 3 6 6 6 3 6 3 6 5 b b b 5 
-        5 5 b b 5 6 3 6 3 6 3 6 3 6 3 6 3 6 3 6 3 6 3 6 3 6 3 5 b b 5 5 
-        . 5 5 b 5 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 5 b 5 5 . 
-        . . 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 . . 
+        . . . . . . . . . . . . . . . . 
+        . . . 4 4 . . . . . . . . . . . 
+        . . 4 4 . . . . . . . 4 4 . . . 
+        . . 4 4 . . 4 . . . . . 4 4 . . 
+        . . 4 4 4 4 4 . . 4 . . 4 4 . . 
+        . 4 4 4 4 4 . . . 4 4 4 4 4 . . 
+        . 4 4 . . . . . . . 4 4 4 4 4 . 
+        . 4 . . . . . . . . . . . . 4 . 
+        . 4 4 4 4 4 4 4 4 4 4 4 4 4 4 . 
+        . . 4 4 4 4 f 4 f 4 4 4 4 4 . . 
+        . . . 4 4 4 4 4 4 4 4 4 4 . . . 
+        . . 4 4 4 4 4 4 4 4 4 4 4 4 . . 
+        . 4 4 . 4 . . . . . . 4 . 4 4 . 
+        . 4 . . 4 . . . . . . 4 . . 4 . 
+        . . 4 . . 4 . . . . 4 . . 4 . . 
+        . . . . . . . . . . . . . . . . 
         `,
     img`
-        . . . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . 
-        . . . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . 
-        . . . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . 
-        . . . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . 
-        . . . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . 
-        . . . . . . . f f f f f e d e d e e e d f f f f f . . . . . . . 
-        . . . . . . f f c f e d e e e e e e e e e d f c f f . . . . . . 
-        . . . . . f f c b f e e d d e e e e d d e e f b c f f . . . . . 
-        . . . . . f c b b f e d c b d e e d c b d e f b b c f . . . . . 
-        . . . . . f b b b f d c b b b d d c b b b d f b b b f . . . . . 
-        f f f f f f f f f f d b b b b d d b b b b d f f f f f f f f f f 
-        . . . . . f b b b f e d b b d e e d b b d e f b b b f . . . . . 
-        . . . . . f b b b f e d d d e d e d d d e d f b b b f . . . . . 
-        . . . . . f f b b f e d e d e d e d e d e d f b b f f . . . . . 
-        . . . . . . f f b f d d d d d d d d d d d d f b f f . . . . . . 
-        . . . . . . . f f f f f f f f f f f f f f f f f f . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . 4 4 . . . . . . . . . . . 
+        . . 4 4 . . . . . . . 4 4 . . . 
+        . . 4 4 . . 4 . . . . . 4 4 . . 
+        . . 4 4 4 4 4 . . 4 . . 4 4 . . 
+        . 4 4 4 4 4 . . . 4 4 4 4 4 . . 
+        . 4 4 . . . . . . . 4 4 4 4 4 . 
+        . 4 . . . . . . . . . . . . 4 . 
+        . 4 4 4 4 4 4 4 4 4 4 4 4 4 4 . 
+        . . 4 4 4 4 f 4 f 4 4 4 4 4 . . 
+        . . . 4 4 4 4 4 4 4 4 4 4 . . . 
+        . . 4 4 4 4 4 4 4 4 4 4 4 4 . . 
+        . 4 4 . 4 . . . . . . 4 . 4 4 . 
+        . 4 . . 4 . . . . . . 4 . . 4 . 
+        . . 4 . . 4 . . . . 4 . . 4 . . 
+        . . . . . . . . . . . . . . . . 
         `,
     img`
-        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . . . . f f f f f f . . . . . . . 
-        . . . . . . . . . . . . . . . . . . f c b b b b c f . . . . . . 
-        . . . . . . . . . . . . . . . . . f c b c b b b b c f . . . . . 
-        f f f . . . . . . . . . . . . . f f f f f f f f f f f f . . . . 
-        . . . f f f f . . . . . . . . f e d e e e e e e e e e d f . . . 
-        . . . . . . . f f f f . . . f e d e d e d e d e d e d e d f . . 
-        . . . . . . . . . . . f f f d d d d d d d d d d d d d d d d f . 
-        . . . . . . . . . . . . . f f f f f f f f f f f f f f f f f f f 
+        . . . . . . . . . . . . . . . . 
+        . . . 4 4 . . . . . . . . . . . 
+        . . 4 4 . . . . . . . 4 4 . . . 
+        . . 4 4 . . 4 . . . . . 4 4 . . 
+        . . 4 4 4 4 4 . . 4 . . 4 4 . . 
+        . 4 4 4 4 4 . . . 4 4 4 4 4 . . 
+        . 4 4 . . . . . . . 4 4 4 4 4 . 
+        . 4 . . . . . . . . . . . . 4 . 
+        . 4 4 4 4 4 4 4 4 4 4 4 4 4 4 . 
+        . . 4 4 4 4 f 4 f 4 4 4 4 4 . . 
+        . . . 4 4 4 4 4 4 4 4 4 4 . . . 
+        . . 4 4 4 4 4 4 4 4 4 4 4 4 . . 
+        . 4 4 . 4 . . . . . . 4 . 4 4 . 
+        . 4 . . 4 . . . . . . 4 . . 4 . 
+        . . 4 . . 4 . . . . 4 . . 4 . . 
+        . . . . . . . . . . . . . . . . 
         `,
     img`
-        . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
-        . f f c f d e d e e e e e e d e d d e e e e e e d e d f c f f . 
-        f f c c f e d e e e e e e e e d d e e e e e e e e d e f c c f f 
-        f c c b f e e e e e e e e e e d e e e e e e e e e e e f b c c f 
-        f c b b f e e e e d d d d e e d e e e d d d d e e e e f b b c f 
-        f b b b f d e e d c b c b d e e e e d c b c b d e e d f b b b f 
-        f b b b f e e d c b c b b b d e e d c b c b b b d e e f b b b f 
-        f b b b f e e d c b b b b b d e e d c b b b b b d e e f b b b f 
-        f b b b f e e d b b b b b b d d e d b b b b b b d e e f b b b f 
-        f b b b f e e d b b b b b b d e e d b b b b b b d e e f b b b f 
-        f b b b f e e d b b b b b b d e e d b b b b b b d e e f b b b f 
-        f b b b f e e e d b b b b d e e e e d b b b b d e e e f b b b f 
-        f b b b f e d e d d d e d e d e d e d e d d d e d e d f b b b f 
-        f f b b f d e d e d e d e d e d e d e d e d e d e d e f b b f f 
-        . f f b f d d d d d d d d d d d d d d d d d d d d d d f b f f . 
-        . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
+        . . . . . . . . . . . . . . . . 
+        . . . 4 4 . . . . . . . . . . . 
+        . . 4 4 . . . . . . . 4 4 . . . 
+        . . 4 4 . . 4 . . . . . 4 4 . . 
+        . . 4 4 4 4 4 . . 4 . . 4 4 . . 
+        . 4 4 4 4 4 . . . 4 4 4 4 4 . . 
+        . 4 4 . . . . . . . 4 4 4 4 4 . 
+        . 4 . . . . . . . . . . . . 4 . 
+        . 4 4 4 4 4 4 4 4 4 4 4 4 4 4 . 
+        . . 4 4 4 4 f 4 f 4 4 4 4 4 . . 
+        . . . 4 4 4 4 4 4 4 4 4 4 . . . 
+        . . 4 4 4 4 4 4 4 4 4 4 4 4 . . 
+        . 4 4 . 4 . . . . . . 4 . 4 4 . 
+        . 4 . . 4 . . . . . . 4 . . 4 . 
+        . . 4 . . 4 . . . . 4 . . 4 . . 
+        . . . . . . . . . . . . . . . . 
         `,
     img`
-        . . . . . . . f . . . f . . . . . . . . f . . . f . . . . . . . 
-        . . . . . . . . f . . . f . . . . . . f . . . f . . . . . . . . 
-        . . . . . f . . . f . . . f . . . . f . . . f . . . f . . . . . 
-        . . . . . . f . . . f f f f f f f f f f f f . . . f . . . . . . 
-        . . . . . . . f . f f c f d e e e e d f c f f . f . . . . . . . 
-        . . . . . . . . f f c b f e e d d e e f b c f f . . . . . . . . 
-        . . . . . . . . f c b b f d d c b d e f b b c f . . . . . . . . 
-        . . . . . . . . f b b b f e c b b b d f b b b f . . . . . . . . 
-        . . . . . . . . f b b b f e b b b b e f b b b f . . . . . . . . 
-        . . . . . . . . f b b b f e d b b e d f b b b f . . . . . . . . 
-        . . . . . . . . f f b b f d e d e d e f b b f f . . . . . . . . 
-        . . . . . . . f . f f b f d d d d d d f b f f . f . . . . . . . 
-        . . . . . . f . . . f f f f f f f f f f f f . . . f . . . . . . 
-        . . . . . f . . . f . . . f . . . . f . . . f . . . f . . . . . 
-        . . . . . . . . f . . . f . . . . . . f . . . f . . . . . . . . 
-        . . . . . . . f . . . f . . . . . . . . f . . . f . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . 4 4 . . . . . . . . . . . 
+        . . 4 4 . . . . . . . 4 4 . . . 
+        . . 4 4 . . 4 . . . . . 4 4 . . 
+        . . 4 4 4 4 4 . . 4 . . 4 4 . . 
+        . 4 4 4 4 4 . . . 4 4 4 4 4 . . 
+        . 4 4 . . . . . . . 4 4 4 4 4 . 
+        . 4 . . . . . . . . . . . . 4 . 
+        . 4 4 4 4 4 4 4 4 4 4 4 4 4 4 . 
+        . . 4 4 4 4 f 4 f 4 4 4 4 4 . . 
+        . . . 4 4 4 4 4 4 4 4 4 4 . . . 
+        . . 4 4 4 4 4 4 4 4 4 4 4 4 . . 
+        . 4 4 . 4 . . . . . . 4 . 4 4 . 
+        . 4 . . 4 . . . . . . 4 . . 4 . 
+        . . 4 . . 4 . . . . 4 . . 4 . . 
+        . . . . . . . . . . . . . . . . 
         `
     ]
     animal_image_list = [
@@ -777,7 +772,6 @@ let morph_in_progress = false
 let current_immunity = 0
 let animals_needed_to_learn_immunity = 0
 let sub: Sprite = null
-displayStartScreen()
 scene.setBackgroundImage(img`
     a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a 
     a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a 
@@ -945,9 +939,18 @@ animals_needed_to_learn_immunity = 5
 current_immunity = -1
 let level = 0.8
 morph_in_progress = false
+let jumping = false
+game.onUpdate(function () {
+    if (sub.y < 10) {
+        sub.vy = 100
+    }
+    if (sub.y > 106) {
+        sub.vy = 0
+    }
+})
 game.onUpdateInterval(5000, function () {
-    shark = sprites.createProjectileFromSide(left_shark_image, 50, level * 90)
-    shark.y = randint(10, scene.screenHeight() - 10)
+    shark = sprites.createProjectileFromSide(left_shark_image, 0, level * 90)
+    shark.x = randint(10, scene.screenWidth() - 10)
     sprites.setDataString(shark, "species", "Shark")
 })
 game.onUpdateInterval(9000, function () {
