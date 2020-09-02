@@ -2,6 +2,17 @@ namespace SpriteKind {
     export const Immunity = SpriteKind.create()
     export const Badge = SpriteKind.create()
 }
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    sub.setVelocity(0, -100)
+    while (sub.y > 10) {
+        pause(10)
+    }
+    sub.setVelocity(0, 100)
+    while (sub.y < 106) {
+        pause(10)
+    }
+    sub.y = 106
+})
 function useImmunity () {
     new_badge = sprites.create(immunity_badge_list[current_immunity], SpriteKind.Badge)
     new_badge.setPosition(12 * current_immunity + 4, 4)
@@ -9,29 +20,6 @@ function useImmunity () {
     current_immunity = -1
     level += 0.1
     music.changeTempoBy(25)
-    while (morph_in_progress) {
-        pause(0.01)
-    }
-    morph_in_progress = true
-    imagemorph.morph(sub, img`
-        . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
-        . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
-        . . f f f f f f f f d d e d e e e e f f f f f f f f f f f f . . 
-        . f f c f d e d e e e e e e e e e e e e e e e e d e d f c f f . 
-        f f c b f e d e e d d e e e e e e e e e e d d e e d e f b c f f 
-        f c b b f d e e d c b d e e e e e e e e d c b d e e d f b b c f 
-        f b b b f e e d c b b b d e e e e e e d c b b b d e e f b b b f 
-        f f f f f e e d b b b b d e e e e e e d b b b b d e e f f f f f 
-        f b b b f e e e d b b d e e e e e e e e d b b d e e e f b b b f 
-        f b b b f e d e d d d e d e d e d e d e d d d e d e d f b b b f 
-        f f b b f d e d e d e d e d e d e d e d e d e d e d e f b b f f 
-        . f f b f d d d d d d d d d d d d d d d d d d d d d d f b f f . 
-        . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
-        `)
-    morph_in_progress = false
 }
 function displayDialog (text: string) {
     game.setDialogFrame(img`
@@ -913,24 +901,25 @@ scene.setBackgroundImage(img`
     7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d 7 7 7 7 7 7 7 7 
     `)
 sub = sprites.create(img`
-    . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . . 
-    . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
-    . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
-    . . . . . . . . . . f d e d e e e f . . . . . . . . . . . . . . 
-    . . . . . . . . . . f d d e e e e f . . . . . . . . . . . . . . 
-    . . f f f f f f f f d d e d e e e e f f f f f f f f f f f f . . 
-    . f f c f d e d e e e e e e e e e e e e e e e e d e d f c f f . 
-    f f c b f e d e e d d e e e e e e e e e e d d e e d e f b c f f 
-    f c b b f d e e d c b d e e e e e e e e d c b d e e d f b b c f 
-    f b b b f e e d c b b b d e e e e e e d c b b b d e e f b b b f 
-    f f f f f e e d b b b b d e e e e e e d b b b b d e e f f f f f 
-    f b b b f e e e d b b d e e e e e e e e d b b d e e e f b b b f 
-    f b b b f e d e d d d e d e d e d e d e d d d e d e d f b b b f 
-    f f b b f d e d e d e d e d e d e d e d e d e d e d e f b b f f 
-    . f f b f d d d d d d d d d d d d d d d d d d d d d d f b f f . 
-    . . f f f f f f f f f f f f f f f f f f f f f f f f f f f f . . 
+    . . . . . . . . . . . . . . . . 
+    . . . 4 4 . . . . . . . . . . . 
+    . . 4 4 . . . . . . . 4 4 . . . 
+    . . 4 4 . . 4 . . . . . 4 4 . . 
+    . . 4 4 4 4 4 . . 4 . . 4 4 . . 
+    . 4 4 4 4 4 . . . 4 4 4 4 4 . . 
+    . 4 4 . . . . . . . 4 4 4 4 4 . 
+    . 4 . . . . . . . . . . . . 4 . 
+    . 4 4 4 4 4 4 4 4 4 4 4 4 4 4 . 
+    . . 4 4 4 4 f 4 f 4 4 4 4 4 . . 
+    . . . 4 4 4 4 4 4 4 4 4 4 . . . 
+    . . 4 4 4 4 4 4 4 4 4 4 4 4 . . 
+    . 4 4 . 4 . . . . . . 4 . 4 4 . 
+    . 4 . . 4 . . . . . . 4 . . 4 . 
+    . . 4 . . 4 . . . . 4 . . 4 . . 
+    . . . . . . . . . . . . . . . . 
     `, SpriteKind.Player)
-controller.moveSprite(sub)
+sub.setPosition(80, 106)
+controller.moveSprite(sub, 100, 0)
 sub.setFlag(SpriteFlag.StayInScreen, true)
 let left_shark_image = img`
     . . . . . . . . . . . . . . . . 
@@ -957,7 +946,7 @@ current_immunity = -1
 let level = 0.8
 morph_in_progress = false
 game.onUpdateInterval(5000, function () {
-    shark = sprites.createProjectileFromSide(left_shark_image, level * 90, 0)
+    shark = sprites.createProjectileFromSide(left_shark_image, 50, level * 90)
     shark.y = randint(10, scene.screenHeight() - 10)
     sprites.setDataString(shark, "species", "Shark")
 })
